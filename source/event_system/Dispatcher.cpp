@@ -73,6 +73,9 @@ void Dispatcher::Pump() {
         // try is needed to handle linux map implementations
         try {
             // handle microsoft map implementation
+            if(mapped_events_->count(i.first) == 0 && mapped_events_->at(i.first) == nullptr) {
+                mapped_events_->emplace(i.first, new std::list<Subscriber*>());
+            }
             if (mapped_events_->count(i.first) == 0) {
                 std::cerr << "Event \"" + i.first + "\" does not apply to any Subscribers." << std::endl;
                 continue;
@@ -134,8 +137,20 @@ void Dispatcher::DispatchEvent(const EventType eventID, const std::shared_ptr<vo
     dispatch_events_->push_back(std::pair<EventType, std::shared_ptr<void>>(eventID, eventData));
 }
 
-void Dispatcher::DispatchImmediate(const EventType eventID, const std::shared_ptr<void> eventData) {
+void Dispatcher::DispatchImmediate(EventType eventID, const std::shared_ptr<void> eventData) {
     std::lock_guard<std::mutex> dispatchLock(mapped_event_mutex_);
+
+    if (mapped_events_->count(eventID) == 0) {
+        mapped_events_->emplace(eventID, new std::list<Subscriber*>());
+        std::cerr << "Event \"" + eventID + "\" does not apply to any Subscribers." << std::endl;
+        return;
+    }
+
+    if (mapped_events_->at(eventID)->size() == 0) {
+        std::cerr << "Event \"" + eventID + "\" does not apply to any Subscribers." << std::endl;
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(thread_queue_mutex_);
     for (auto it=mapped_events_->at(eventID)->begin(); it != mapped_events_->at(eventID)->end(); it++) {
         if(*it == nullptr) {

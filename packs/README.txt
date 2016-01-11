@@ -20,4 +20,6 @@ EVENT_INPUT
 EVENT_COMPONENT_UPDATE
 EVENT_ACTOR_UPDATE
 
+More useful base events can be seen in the BaseLoader, BaseApp, and BaseRender default packs.
+
 You are free to dispatch your own events and respond to all EventID's.

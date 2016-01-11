@@ -10,7 +10,6 @@ App3D::App3D() {
     // component_factories_ = nullptr;
     model_store_ = nullptr;
     renderer_ = nullptr;
-    input_device_ = nullptr;
     timer_ = nullptr;
     camera_ = nullptr;
 }
@@ -38,10 +37,8 @@ App3D::~App3D() {
     }
 }
 
-bool App3D::Initialize(Renderer* renderer,
-                       InputDevice* input_device) {
+bool App3D::Initialize(Renderer* renderer) {
     renderer_ = static_cast<OpenGLRenderer*>(renderer);
-    input_device_ = input_device;
 
     camera_ = new GlCamera();
     camera_->Initialize();

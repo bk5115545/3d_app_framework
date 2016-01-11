@@ -14,11 +14,10 @@
 
 #include "virtual/component.h"
 #include "virtual/app.h"
-
+z
 class App3D : public App {
 protected:
     // ComponentLibrary* component_factories_;
-    InputDevice* input_device_;
     Timer* timer_;
 
     OpenGLRenderer* renderer_;
@@ -30,7 +29,7 @@ protected:
 public:
     App3D();
     ~App3D();
-    bool Initialize(Renderer*, InputDevice*);
+    bool Initialize(Renderer*);
     void Reset();
     bool LoadLevel(std::string);
     void Run();
