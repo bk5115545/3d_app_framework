@@ -10,6 +10,8 @@ class BaseLoader {
             Subscriber* init_subscriber = new Subscriber(this);
             init_subscriber->method = std::bind(&BaseLoaderStaticInit::Init, this, std::placeholders::_1);
             Dispatcher::GetInstance()->AddEventSubscriber(init_subscriber, "EVENT_APP_INIT_SUCCESS");
+
+            std::cout << "IN BASE_LOADER" << std::endl;
         }
 
         void Init(std::shared_ptr<void> event_data) {

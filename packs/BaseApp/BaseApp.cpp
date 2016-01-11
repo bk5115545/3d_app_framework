@@ -14,6 +14,8 @@ class BaseApp {
             Subscriber* run_subscriber = new Subscriber(this);
             run_subscriber->method = std::bind(&BaseAppStaticInit::Run, this, std::placeholders::_1);
             Dispatcher::GetInstance()->AddEventSubscriber(run_subscriber, "EVENT_APP_RUN");
+
+            std::cout << "IN BASE_APP" << std::endl;
         }
 
         void Init(std::shared_ptr<void> event_data) {
