@@ -29,6 +29,7 @@ class BaseLoader {
             }
 
             Dispatcher::GetInstance()->DispatchImmediate("EVENT_LOADER_INIT_SUCCESS", std::make_shared<void>(app));
+            Dispatcher::GetInstance()->DispatchImmediate("EVENT_APP_READY", std::make_shared<void>(app));
         }
 
     };
@@ -38,4 +39,6 @@ class BaseLoader {
     static BaseLoader::BaseLoaderStaticInit init;
 };
 
-BaseLoader BASE_LOADER_NORMAL_NAME;
+BaseLoader::BaseLoaderStaticInit BaseLoader::init;
+
+static BaseLoader BASE_LOADER_NORMAL_NAME;

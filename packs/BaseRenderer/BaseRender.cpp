@@ -6,7 +6,7 @@
 class BaseRender {
     class BaseRenderStaticInit {
         BaseRenderStaticInit() {
-            Subscriber* init_subscriber = new Subscriber(this);
+            Subscriber* init_subscriber = new Subscriber(this, false);
             init_subscriber->method = std::bind(&BaseRenderStaticInit::Init, this, std::placeholders:_1);
             Dispatcher::GetInstance()->AddEventSubscriber(init_subscriber, "EVENT_RENDERER_INIT");
 
@@ -39,4 +39,7 @@ class BaseRender {
  private:
         static BaseRender::BaseRenderStaticInit init;
 };
-BaseRender BASE_RENDERER_NORMAL_NAME;
+
+BaseRender::BaseRenderStaticInit BaseRender::init;
+
+static BaseRender BASE_RENDERER_NORMAL_NAME;

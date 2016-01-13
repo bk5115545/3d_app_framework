@@ -14,7 +14,7 @@
 
 #include "virtual/component.h"
 #include "virtual/app.h"
-z
+
 class App3D : public App {
 protected:
     // ComponentLibrary* component_factories_;

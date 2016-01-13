@@ -44,4 +44,6 @@ class BaseApp {
     static BaseApp::BaseAppStaticInit init;
 };
 
-BaseApp BASE_APP_NORMAL_NAME;
+BaseApp::BaseAppStaticInit BaseApp::init;
+
+static BaseApp BASE_APP_NORMAL_NAME;
