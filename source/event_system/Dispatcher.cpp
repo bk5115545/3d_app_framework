@@ -90,11 +90,11 @@ void Dispatcher::Pump() {
 }
 
 void Dispatcher::NonSerialProcess() {
-    while(nonserial_queue_->size() != 0) {
+    while(nonserial_queue_->size() > 0) {
         auto work = nonserial_queue_->front();
         nonserial_queue_->pop_front();
         try {
-            if (work.first->method == NULL || work.first->owner == nullptr) continue;
+            if (work.first->method == NULL) continue;
             work.first->method(work.second);
         } catch (std::string msg) {
             std::cerr << "Exception thrown by function called in nonserial processing." << std::endl;
@@ -122,7 +122,7 @@ void Dispatcher::ThreadProcess() {
         }
 
         try {
-            if (work.first->method == NULL || work.first->owner == nullptr) continue;
+            if (work.first->method == NULL) continue;
             work.first->method(work.second);
         } catch (std::string e) {
             std::cerr << "Exception thrown by function called by Event Threads." << std::endl;

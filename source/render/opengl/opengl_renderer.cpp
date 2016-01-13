@@ -83,17 +83,17 @@ void OpenGLRenderer::AddModel(GlDrawable* model) {
     models_.push_back(model);
 }
 
-inline void OpenGLRenderer::PreDraw() {
+void OpenGLRenderer::PreDraw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-inline void OpenGLRenderer::Draw() {
+void OpenGLRenderer::Draw() {
     for(auto iter = models_.begin(); iter != models_.end(); ++iter) {
         (*iter)->Draw(camera_->vp_matrix());
     }
 }
 
-inline void OpenGLRenderer::PostDraw() {
+void OpenGLRenderer::PostDraw() {
     SDL_GL_SwapWindow(window_);
 }
 

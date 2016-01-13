@@ -44,9 +44,9 @@ public:
     bool Initialize();
     void AddModel(GlDrawable*);
 
-    inline void PreDraw();
-    inline void Draw();
-    inline void PostDraw();
+    void PreDraw();
+    void Draw();
+    void PostDraw();
 
     uint32 width();
     uint32 height();

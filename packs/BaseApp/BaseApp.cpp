@@ -1,46 +1,35 @@
 #include <memory>
 
+#include "core/app_3d.h"
+
 #include "event_system/Dispatcher.h"
 #include "event_system/Subscriber.h"
 
 class BaseApp {
+ public:
     class BaseAppStaticInit {
-        App* app;
+        std::shared_ptr<App3D> app;
+     public:
         BaseAppStaticInit() {
-            Subscriber* init_subscriber = new Subscriber(this);
+            Subscriber* init_subscriber = new Subscriber(this, false);
             init_subscriber->method = std::bind(&BaseAppStaticInit::Init, this, std::placeholders::_1);
             Dispatcher::GetInstance()->AddEventSubscriber(init_subscriber, "EVENT_RENDER_INIT_SUCCESS");
-
-            Subscriber* run_subscriber = new Subscriber(this);
-            run_subscriber->method = std::bind(&BaseAppStaticInit::Run, this, std::placeholders::_1);
-            Dispatcher::GetInstance()->AddEventSubscriber(run_subscriber, "EVENT_APP_RUN");
-
-            std::cout << "IN BASE_APP" << std::endl;
         }
 
         void Init(std::shared_ptr<void> event_data) {
-            //========================================
-            // Construct Game
-            //========================================
-            app = new App3D((Renderer*)event_data.get());
-            if (!app->Initialize()) {
+            app = std::shared_ptr<App3D>(new App3D());
+            if (!app->Initialize(std::static_pointer_cast<Renderer>(event_data))) {
                 printf("Game could not Initialize!");
-                exit(1);  // this case will leak a lot of memory...
-                          // should properly do destructor calls and proper shutdown
+                exit(1);
             }
 
-            Dispatcher::GetInstance()->DispatchImmediate("EVENT_APP_INIT_SUCCESS", std::make_shared<void>(app));
-        }
-
-        void Run(std::shared_ptr<void> unimportant) {
-            // UNUSED(unimportant);
-            app->Run();
+            Dispatcher::GetInstance()->DispatchImmediate("EVENT_APP_INIT_SUCCESS", app);
         }
 
     };
 
     friend class BaseAppStaticInit;
- private:
+ public:
     static BaseApp::BaseAppStaticInit init;
 };
 

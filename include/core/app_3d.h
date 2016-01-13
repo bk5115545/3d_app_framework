@@ -20,7 +20,7 @@ protected:
     // ComponentLibrary* component_factories_;
     Timer* timer_;
 
-    OpenGLRenderer* renderer_;
+    std::shared_ptr<OpenGLRenderer> renderer_;
     GlCamera* camera_;
     GlModelStore* model_store_;
 
@@ -29,7 +29,7 @@ protected:
 public:
     App3D();
     ~App3D();
-    bool Initialize(Renderer*);
+    bool Initialize(std::shared_ptr<Renderer>);
     void Reset();
     bool LoadLevel(std::string);
     void Run();

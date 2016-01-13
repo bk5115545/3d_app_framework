@@ -9,7 +9,7 @@ protected:
 
 public:
     // virtual Camera() = 0;
-    // virtual ~Camera() = 0;
+    //virtual ~Camera() = 0;
     virtual bool Initialize() = 0;
     virtual void Update(std::shared_ptr<void>) = 0;
 };

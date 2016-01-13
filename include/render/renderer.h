@@ -11,9 +11,9 @@ public:
 
     virtual bool Initialize() = 0;
 
-    virtual inline void PreDraw() = 0;
-    virtual inline void Draw() = 0;
-    virtual inline void PostDraw() = 0;
+    virtual void PreDraw() = 0;
+    virtual void Draw() = 0;
+    virtual void PostDraw() = 0;
 
     virtual uint32 width() = 0;
     virtual uint32 height() = 0;

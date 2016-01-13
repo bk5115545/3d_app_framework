@@ -3,11 +3,11 @@ To make a code pack for this engine each of the following requirements must be m
 1. Cmake must be used to build your pack
 2. Your pack must have a CMakeLists.txt in its root folder that describes how to build and link your pack
     -- Include all your source files in the list ${PACK_SOURCE} by appending them by using
-        LIST(APPEND PACK_SOURCE ${PACK_SOURCE} ${YourSourceFileList})
+        LIST(APPEND PACK_SOURCE "${YourSourceFileList}")
     -- Include all necessary libs in the list ${APP_PACK_LIBS} by appending them using
-        LIST(APPEND APP_PACK_LIBS ${APP_PACK_LIBS} ${YourRequiredLibs})
+        LIST(APPEND APP_PACK_LIBS "${YourRequiredLibs}")
     -- Include all header locations (include directories) in the list ${APP_PACK_INCLUDES} by appending them using
-        LIST(APPEND APP_PACK_INCLUDES ${APP_PACK_INCLUDES} ${YourIncludeDirectories})
+        LIST(APPEND APP_PACK_INCLUDES "${YourIncludeDirectories}")
 3. Your pack must contain a static init block that registers Subscribers with Dispatcher
     -- Your code will not be automatically called in any other way than through Subscribers that are registered with Dispatcher
     -- Subscribers are called concurrently through Dispatcher.  Make sure to control non-threadsafe resources

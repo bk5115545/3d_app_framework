@@ -9,7 +9,6 @@
 App3D::App3D() {
     // component_factories_ = nullptr;
     model_store_ = nullptr;
-    renderer_ = nullptr;
     timer_ = nullptr;
     camera_ = nullptr;
 }
@@ -37,8 +36,8 @@ App3D::~App3D() {
     }
 }
 
-bool App3D::Initialize(Renderer* renderer) {
-    renderer_ = static_cast<OpenGLRenderer*>(renderer);
+bool App3D::Initialize(std::shared_ptr<Renderer> renderer) {
+    renderer_ = std::dynamic_pointer_cast<OpenGLRenderer>(renderer);
 
     camera_ = new GlCamera();
     camera_->Initialize();
@@ -50,15 +49,6 @@ bool App3D::Initialize(Renderer* renderer) {
 
     timer_ = new Timer();
     timer_->Start();
-
-    uint32 screen_width = 800;
-    uint32 screen_height = 600;
-
-    // #ifndef NDEBUG
-    //     debug_subscriber_ = new Subscriber(this);
-    //     debug_subscriber_->method = std::bind(&App3D::printFrameRate, this, std::placeholders::_1);
-    //     Dispatcher::GetInstance()->AddEventSubscriber(debug_subscriber_, "EVENT_COMPONENT_UPDATE");
-    // #endif
 
     // Create Factories
     // component_factories_ = new ComponentLibrary();
@@ -110,7 +100,7 @@ bool App3D::LoadLevel(std::string file) {
     std::string model = "cube";
 
     GlDrawable* new_gldrawable = new GlDrawable(new_actor);
-    new_gldrawable->Initialize(renderer_, model_store_->Search(model));
+    new_gldrawable->Initialize(renderer_.get(), model_store_->Search(model));
     Component* new_component = static_cast<Component*>(new_gldrawable);
     new_actor->AddComponent(new_component);
 
@@ -121,6 +111,7 @@ void App3D::Run() {
     Update(timer_->DeltaTime());
     timer_->Update();
 
+    std::cout <<renderer_ << std::endl;
     renderer_->PreDraw();
     renderer_->Draw();
     renderer_->PostDraw();

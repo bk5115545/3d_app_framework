@@ -1,17 +1,19 @@
 #include <memory>
 #include <string>
 
+#include "core/app_3d.h"
+
 #include "event_system/Dispatcher.h"
 #include "event_system/Subscriber.h"
 
 class BaseLoader {
+ public:
     class BaseLoaderStaticInit {
+     public:
         BaseLoaderStaticInit() {
-            Subscriber* init_subscriber = new Subscriber(this);
+            Subscriber* init_subscriber = new Subscriber(this, false);
             init_subscriber->method = std::bind(&BaseLoaderStaticInit::Init, this, std::placeholders::_1);
             Dispatcher::GetInstance()->AddEventSubscriber(init_subscriber, "EVENT_APP_INIT_SUCCESS");
-
-            std::cout << "IN BASE_LOADER" << std::endl;
         }
 
         void Init(std::shared_ptr<void> event_data) {
@@ -28,10 +30,8 @@ class BaseLoader {
                           // should properly do destructor calls and proper shutdown
             }
 
-            Dispatcher::GetInstance()->DispatchImmediate("EVENT_LOADER_INIT_SUCCESS", std::make_shared<void>(app));
-            Dispatcher::GetInstance()->DispatchImmediate("EVENT_APP_READY", std::make_shared<void>(app));
+            Dispatcher::GetInstance()->DispatchImmediate("EVENT_APP_READY", event_data);
         }
-
     };
 
     friend class BaseLoaderStaticInit;
